@@ -6,7 +6,8 @@
       "needsCake": true,
       "cakeReceived": true,
       "giftMoney": 1000,
-      "id": 1
+      "id": 1,
+      "side": "groom"
     },
     {
       "name": "陳小美",
@@ -14,7 +15,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 2200,
-      "id": 2
+      "id": 2,
+      "side": "groom"
     },
     {
       "name": "李志偉",
@@ -22,7 +24,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 3000,
-      "id": 3
+      "id": 3,
+      "side": "groom"
     },
     {
       "name": "林美珍",
@@ -30,7 +33,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 4
+      "id": 4,
+      "side": "groom"
     },
     {
       "name": "張家豪",
@@ -38,7 +42,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 5
+      "id": 5,
+      "side": "groom"
     },
     {
       "name": "黃淑芬",
@@ -46,7 +51,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 6
+      "id": 6,
+      "side": "groom"
     },
     {
       "name": "劉建宏",
@@ -54,7 +60,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 7
+      "id": 7,
+      "side": "groom"
     },
     {
       "name": "吳雅婷",
@@ -62,7 +69,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 1000,
-      "id": 8
+      "id": 8,
+      "side": "groom"
     },
     {
       "name": "吳雅芳",
@@ -70,7 +78,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 9
+      "id": 9,
+      "side": "groom"
     },
     {
       "name": "蔡宗翰",
@@ -78,7 +87,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 6500,
-      "id": 10
+      "id": 10,
+      "side": "groom"
     },
     {
       "name": "許淑娟",
@@ -86,7 +96,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 1000,
-      "id": 11
+      "id": 11,
+      "side": "groom"
     },
     {
       "name": "鄭俊傑",
@@ -94,7 +105,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 12
+      "id": 12,
+      "side": "groom"
     },
     {
       "name": "游雅雯",
@@ -102,7 +114,8 @@
       "needsCake": true,
       "cakeReceived": true,
       "giftMoney": 1000,
-      "id": 13
+      "id": 13,
+      "side": "groom"
     },
     {
       "name": "謝建志",
@@ -110,7 +123,8 @@
       "needsCake": true,
       "cakeReceived": true,
       "giftMoney": 1000,
-      "id": 14
+      "id": 14,
+      "side": "groom"
     },
     {
       "name": "賴怡君",
@@ -118,7 +132,8 @@
       "needsCake": true,
       "cakeReceived": true,
       "giftMoney": 1000,
-      "id": 15
+      "id": 15,
+      "side": "groom"
     },
     {
       "name": "洪志明",
@@ -126,7 +141,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 16
+      "id": 16,
+      "side": "groom"
     },
     {
       "name": "邱淑貞",
@@ -134,7 +150,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 17
+      "id": 17,
+      "side": "groom"
     },
     {
       "name": "蕭雅婷",
@@ -142,7 +159,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 18
+      "id": 18,
+      "side": "groom"
     },
     {
       "name": "周建民",
@@ -150,7 +168,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 19
+      "id": 19,
+      "side": "groom"
     },
     {
       "name": "楊淑華",
@@ -158,7 +177,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 20
+      "id": 20,
+      "side": "groom"
     },
     {
       "name": "吳志豪",
@@ -166,7 +186,8 @@
       "needsCake": true,
       "cakeReceived": true,
       "giftMoney": 2000,
-      "id": 21
+      "id": 21,
+      "side": "groom"
     },
     {
       "name": "徐美玲",
@@ -174,7 +195,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 22
+      "id": 22,
+      "side": "groom"
     },
     {
       "name": "盧建宏",
@@ -182,7 +204,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 23
+      "id": 23,
+      "side": "groom"
     },
     {
       "name": "柯淑芬",
@@ -190,7 +213,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 24
+      "id": 24,
+      "side": "groom"
     },
     {
       "name": "魏俊宏",
@@ -198,7 +222,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 25
+      "id": 25,
+      "side": "groom"
     },
     {
       "name": "潘雅琳",
@@ -206,7 +231,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 26
+      "id": 26,
+      "side": "groom"
     },
     {
       "name": "石志偉",
@@ -214,7 +240,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 27
+      "id": 27,
+      "side": "groom"
     },
     {
       "name": "莊淑惠",
@@ -222,7 +249,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 28
+      "id": 28,
+      "side": "groom"
     },
     {
       "name": "范志豪",
@@ -230,7 +258,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 29
+      "id": 29,
+      "side": "groom"
     },
     {
       "name": "江美慧",
@@ -238,7 +267,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 30
+      "id": 30,
+      "side": "groom"
     },
     {
       "name": "孫建志",
@@ -246,7 +276,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 31
+      "id": 31,
+      "side": "groom"
     },
     {
       "name": "葉淑君",
@@ -254,7 +285,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 32
+      "id": 32,
+      "side": "groom"
     },
     {
       "name": "方俊傑",
@@ -262,7 +294,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 33
+      "id": 33,
+      "side": "groom"
     },
     {
       "name": "田雅婷",
@@ -270,7 +303,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 34
+      "id": 34,
+      "side": "groom"
     },
     {
       "name": "錢志明",
@@ -278,7 +312,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 35
+      "id": 35,
+      "side": "groom"
     },
     {
       "name": "董淑華",
@@ -286,7 +321,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 36
+      "id": 36,
+      "side": "bride"
     },
     {
       "name": "程建宏",
@@ -294,7 +330,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 37
+      "id": 37,
+      "side": "bride"
     },
     {
       "name": "何美珍",
@@ -302,7 +339,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 38
+      "id": 38,
+      "side": "bride"
     },
     {
       "name": "馬志豪",
@@ -310,7 +348,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 39
+      "id": 39,
+      "side": "bride"
     },
     {
       "name": "施淑芬",
@@ -318,7 +357,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 40
+      "id": 40,
+      "side": "bride"
     },
     {
       "name": "戴建民",
@@ -326,7 +366,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 41
+      "id": 41,
+      "side": "bride"
     },
     {
       "name": "夏雅雯",
@@ -334,7 +375,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 42
+      "id": 42,
+      "side": "bride"
     },
     {
       "name": "邵志偉",
@@ -342,7 +384,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 43
+      "id": 43,
+      "side": "bride"
     },
     {
       "name": "歐淑娟",
@@ -350,7 +393,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 44
+      "id": 44,
+      "side": "bride"
     },
     {
       "name": "毛俊傑",
@@ -358,7 +402,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 45
+      "id": 45,
+      "side": "bride"
     },
     {
       "name": "黎美玲",
@@ -366,7 +411,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 46
+      "id": 46,
+      "side": "bride"
     },
     {
       "name": "蘇建宏",
@@ -374,7 +420,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 47
+      "id": 47,
+      "side": "bride"
     },
     {
       "name": "葛淑貞",
@@ -382,7 +429,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 48
+      "id": 48,
+      "side": "bride"
     },
     {
       "name": "常雅琳",
@@ -390,7 +438,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 49
+      "id": 49,
+      "side": "bride"
     },
     {
       "name": "康志豪",
@@ -398,7 +447,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 50
+      "id": 50,
+      "side": "bride"
     },
     {
       "name": "賀淑惠",
@@ -406,7 +456,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 51
+      "id": 51,
+      "side": "bride"
     },
     {
       "name": "習建志",
@@ -414,7 +465,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 52
+      "id": 52,
+      "side": "bride"
     },
     {
       "name": "鍾雅婷",
@@ -422,7 +474,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 53
+      "id": 53,
+      "side": "bride"
     },
     {
       "name": "傅淑芬",
@@ -430,7 +483,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 54
+      "id": 54,
+      "side": "bride"
     },
     {
       "name": "龔志明",
@@ -438,7 +492,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 55
+      "id": 55,
+      "side": "bride"
     },
     {
       "name": "童美慧",
@@ -446,7 +501,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 56
+      "id": 56,
+      "side": "bride"
     },
     {
       "name": "宋建宏",
@@ -454,7 +510,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 57
+      "id": 57,
+      "side": "bride"
     },
     {
       "name": "伍俊傑",
@@ -462,7 +519,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 58
+      "id": 58,
+      "side": "bride"
     },
     {
       "name": "聶淑君",
@@ -470,7 +528,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 59
+      "id": 59,
+      "side": "bride"
     },
     {
       "name": "岳志偉",
@@ -478,7 +537,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 60
+      "id": 60,
+      "side": "bride"
     },
     {
       "name": "宮雅雯",
@@ -486,7 +546,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 61
+      "id": 61,
+      "side": "bride"
     },
     {
       "name": "任建民",
@@ -494,7 +555,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 62
+      "id": 62,
+      "side": "bride"
     },
     {
       "name": "殷淑華",
@@ -502,7 +564,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 63
+      "id": 63,
+      "side": "bride"
     },
     {
       "name": "沈俊宏",
@@ -510,7 +573,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 64
+      "id": 64,
+      "side": "bride"
     },
     {
       "name": "彭美玲",
@@ -518,7 +582,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 65
+      "id": 65,
+      "side": "bride"
     },
     {
       "name": "段建志",
@@ -526,7 +591,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 66
+      "id": 66,
+      "side": "bride"
     },
     {
       "name": "袁淑芬",
@@ -534,7 +600,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 67
+      "id": 67,
+      "side": "bride"
     },
     {
       "name": "唐志豪",
@@ -542,7 +609,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 68
+      "id": 68,
+      "side": "bride"
     },
     {
       "name": "萬雅婷",
@@ -550,7 +618,8 @@
       "needsCake": true,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 69
+      "id": 69,
+      "side": "bride"
     },
     {
       "name": "余建宏",
@@ -558,16 +627,8 @@
       "needsCake": false,
       "cakeReceived": false,
       "giftMoney": 0,
-      "id": 70
-    },
-    {
-      "name": "未出席的賓客",
-      "giftMoney": 0,
-      "tableNumber": "",
-      "absent": true,
-      "needsCake": false,
-      "cakeReceived": false,
-      "id": 72
+      "id": 70,
+      "side": "bride"
     }
   ]
 }

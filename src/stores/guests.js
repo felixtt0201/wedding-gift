@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { getAllGuests, searchGuests, updateGuest, createGuest, deleteGuest } from '../api/guests'
 
 export const useGuestsStore = defineStore('guests', () => {
+  const currentSide = ref(null) // 'groom' | 'bride'
   const allGuests = ref([])
   const searchResults = ref([])
   const currentGuest = ref(null)
@@ -18,10 +19,18 @@ export const useGuestsStore = defineStore('guests', () => {
     return { total: needs.length, received: received.length }
   })
 
+  function setSide(side) {
+    currentSide.value = side
+    allGuests.value = []
+    searchResults.value = []
+    loadAll()
+  }
+
   async function loadAll() {
+    if (!currentSide.value) return
     loading.value = true
     try {
-      allGuests.value = await getAllGuests()
+      allGuests.value = await getAllGuests(currentSide.value)
     } finally {
       loading.value = false
     }
@@ -32,7 +41,7 @@ export const useGuestsStore = defineStore('guests', () => {
       searchResults.value = []
       return
     }
-    searchResults.value = await searchGuests(name.trim())
+    searchResults.value = await searchGuests(name.trim(), currentSide.value)
   }
 
   function selectGuest(guest) {
@@ -62,7 +71,7 @@ export const useGuestsStore = defineStore('guests', () => {
   async function addGuest(data) {
     loading.value = true
     try {
-      const created = await createGuest(data)
+      const created = await createGuest({ ...data, side: currentSide.value })
       allGuests.value.push(created)
       showToast(`已新增賓客：${data.name}`, 'success')
     } catch (e) {
@@ -78,11 +87,9 @@ export const useGuestsStore = defineStore('guests', () => {
     let skipped = 0
     try {
       for (const g of guests) {
-        const exists = allGuests.value.find(
-          existing => existing.name === g.name
-        )
+        const exists = allGuests.value.find(existing => existing.name === g.name)
         if (exists) { skipped++; continue }
-        const created = await createGuest(g)
+        const created = await createGuest({ ...g, side: currentSide.value })
         allGuests.value.push(created)
         added++
       }
@@ -106,9 +113,10 @@ export const useGuestsStore = defineStore('guests', () => {
   }
 
   return {
+    currentSide,
     allGuests, searchResults, currentGuest, loading, toast,
     totalGiftMoney, cakeStats,
-    loadAll, search, selectGuest, clearSelection,
+    setSide, loadAll, search, selectGuest, clearSelection,
     saveGuest, addGuest, importGuests, removeGuest, showToast
   }
 })
