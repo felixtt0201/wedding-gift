@@ -102,7 +102,7 @@ const form = ref({
   name: '',
   giftMoney: 0,
   tableNumber: '',
-  absent: true,
+  absent: false,
   needsCake: false,
   cakeReceived: false
 })

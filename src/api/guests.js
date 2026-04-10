@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+import { supabase } from '../lib/supabase'
 
 function fromDb(row) {
   if (!row) return null
@@ -36,6 +31,14 @@ export async function getAllGuests(side) {
     .from('guests')
     .select('*')
     .eq('side', side)
+  if (error) throw new Error('載入失敗')
+  return data.map(fromDb)
+}
+
+export async function getAllGuestsAdmin() {
+  const { data, error } = await supabase
+    .from('guests')
+    .select('*')
   if (error) throw new Error('載入失敗')
   return data.map(fromDb)
 }
