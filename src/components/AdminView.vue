@@ -29,9 +29,14 @@
             @click="filterSide = f.value; loadLogs()"
           >{{ f.label }}</button>
         </div>
-        <button class="btn-ghost refresh-btn" @click="loadLogs" :disabled="loadingLogs">
-          {{ loadingLogs ? '載入中…' : '重新整理' }}
-        </button>
+        <div class="log-actions">
+          <button class="btn-ghost refresh-btn" @click="loadLogs" :disabled="loadingLogs">
+            {{ loadingLogs ? '載入中…' : '重新整理' }}
+          </button>
+          <button class="btn-danger clear-log-btn" @click="doClearLogs" :disabled="loadingLogs">
+            清除紀錄
+          </button>
+        </div>
       </div>
 
       <div class="table-wrap">
@@ -74,7 +79,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { getLogs } from '../api/logs'
+import { getLogs, clearLogs } from '../api/logs'
 import { getAllGuestsAdmin } from '../api/guests'
 
 const logs = ref([])
@@ -106,6 +111,20 @@ async function loadLogs() {
 
 onMounted(() => loadLogs())
 
+async function doClearLogs() {
+  const target = filterSide.value ? (filterSide.value === 'groom' ? '男方' : '女方') : '全部'
+  if (!confirm(`確定要清除${target}操作紀錄嗎？此操作無法復原。`)) return
+  loadingLogs.value = true
+  try {
+    await clearLogs(filterSide.value)
+    logs.value = []
+  } catch (e) {
+    alert(e.message)
+  } finally {
+    loadingLogs.value = false
+  }
+}
+
 function formatTime(iso) {
   const d = new Date(iso)
   const pad = n => String(n).padStart(2, '0')
@@ -123,7 +142,6 @@ function formatDetails(action, details) {
   if (action === '標記出席') return details.absent ? '標記未出席' : '改為已出席'
   if (action === '新增賓客') {
     const parts = []
-    if (details.tableNumber) parts.push(`第${details.tableNumber}桌`)
     if (details.giftMoney) parts.push(`禮金$${details.giftMoney}`)
     if (details.needsCake) parts.push('需禮餅')
     return parts.join('・') || '—'
@@ -192,8 +210,16 @@ function formatDetails(action, details) {
   background: var(--primary);
   color: #fff;
 }
-.refresh-btn {
+.log-actions {
+  display: flex;
+  gap: 0.4rem;
   margin-left: auto;
+}
+.refresh-btn {
+  font-size: 0.82rem;
+  padding: 0.3rem 0.8rem;
+}
+.clear-log-btn {
   font-size: 0.82rem;
   padding: 0.3rem 0.8rem;
 }

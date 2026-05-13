@@ -32,10 +32,6 @@
         />
         <button v-if="filterName" class="filter-clear-btn" @click="filterName = ''">✕</button>
       </div>
-      <select v-model="filterTable" class="filter-select">
-        <option value="">全部桌次</option>
-        <option v-for="t in tables" :key="t" :value="t">第 {{ t }} 桌</option>
-      </select>
       <select v-model="filterCake" class="filter-select">
         <option value="">全部禮餅</option>
         <option value="need">需要禮餅</option>
@@ -52,7 +48,10 @@
     <!-- 工具列 -->
     <div class="toolbar">
       <span class="result-count">共 {{ filtered.length }} 位賓客</span>
-      <button class="btn-primary btn-add" @click="showAddModal = true">＋ 新增賓客</button>
+      <div class="toolbar-btns">
+        <button class="btn-danger btn-clear" @click="clearAll">刪除全部賓客</button>
+        <button class="btn-primary btn-add" @click="showAddModal = true">＋ 新增賓客</button>
+      </div>
     </div>
 
     <!-- 表格 -->
@@ -61,7 +60,6 @@
         <thead>
           <tr>
             <th @click="setSort('name')">姓名 <SortIcon field="name" /></th>
-            <th @click="setSort('tableNumber')">桌次 <SortIcon field="tableNumber" /></th>
             <th @click="setSort('giftMoney')">禮金 <SortIcon field="giftMoney" /></th>
             <th @click="setSort('needsCake')">需要禮餅 <SortIcon field="needsCake" /></th>
             <th @click="setSort('cakeReceived')">禮餅狀態 <SortIcon field="cakeReceived" /></th>
@@ -70,14 +68,13 @@
         </thead>
         <tbody>
           <tr v-if="!filtered.length">
-            <td colspan="6" class="empty-row">沒有符合的賓客</td>
+            <td colspan="5" class="empty-row">沒有符合的賓客</td>
           </tr>
           <tr v-for="g in filtered" :key="g.id" :class="{ 'row-received': g.cakeReceived, 'row-absent': g.absent }">
             <td class="name-cell">
               {{ g.name }}
               <span v-if="g.absent" class="tag tag-sm tag-absent">未出席</span>
             </td>
-            <td class="center">{{ g.tableNumber ? `第 ${g.tableNumber} 桌` : '—' }}</td>
             <td class="center money-cell">
               <span v-if="!editing[g.id]" class="money-display" @click="startEdit(g)">
                 {{ formatMoney(g.giftMoney) }}
@@ -112,7 +109,7 @@
                   </span>
                 </label>
               </template>
-              <span v-else class="text-muted">—</span>
+              <span v-else class="tag tag-sm tag-done tag-readonly">已領過</span>
             </td>
             <td class="center">
               <button class="btn-danger btn-sm" @click="remove(g.id)">刪除</button>
@@ -133,26 +130,18 @@ const store = useGuestsStore()
 const showAddModal = ref(false)
 
 const filterName = ref('')
-const filterTable = ref('')
 const filterCake = ref('')
 const filterAbsent = ref('')
-const sortField = ref('tableNumber')
+const sortField = ref('name')
 const sortAsc = ref(true)
 const editing = ref({})
 const editValues = ref({})
 
-const tables = computed(() => {
-  const set = new Set(store.allGuests.map(g => g.tableNumber))
-  return [...set].sort()
-})
-
 const filtered = computed(() => {
   let list = store.allGuests
   if (filterName.value) {
-    list = list.filter(g => g.name.includes(filterName.value))
-  }
-  if (filterTable.value) {
-    list = list.filter(g => g.tableNumber === filterTable.value)
+    const q = filterName.value.toLowerCase()
+    list = list.filter(g => g.name.toLowerCase().includes(q))
   }
   if (filterCake.value === 'need') list = list.filter(g => g.needsCake)
   else if (filterCake.value === 'received') list = list.filter(g => g.needsCake && g.cakeReceived)
@@ -204,6 +193,13 @@ async function toggleCake(g) {
 async function remove(id) {
   if (!confirm('確定要刪除這位賓客嗎？')) return
   await store.removeGuest(id)
+}
+
+async function clearAll() {
+  const count = store.allGuests.length
+  if (!count) return
+  if (!confirm(`確定要刪除全部 ${count} 位賓客嗎？此操作無法復原。`)) return
+  await store.clearAllGuests()
 }
 
 const SortIcon = {
@@ -302,6 +298,7 @@ tr:hover td { background: #fef9f2; }
 
 .tag-sm { font-size: 0.72rem; padding: 0.1rem 0.45rem; }
 .tag-absent { background: #fdecea; color: var(--error); margin-left: 0.4rem; }
+.tag-readonly { opacity: 0.55; cursor: default; }
 
 .row-absent td { color: var(--text-muted); }
 .row-absent .name-cell { color: var(--text); }
@@ -309,6 +306,8 @@ tr:hover td { background: #fef9f2; }
 .toolbar {
   display: flex; align-items: center; justify-content: space-between;
 }
+.toolbar-btns { display: flex; gap: 0.5rem; }
 .result-count { font-size: 0.82rem; color: var(--text-muted); }
 .btn-add { font-size: 0.9rem; padding: 0.5rem 1rem; }
+.btn-clear { font-size: 0.9rem; padding: 0.5rem 1rem; }
 </style>

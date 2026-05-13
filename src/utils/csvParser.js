@@ -12,7 +12,6 @@ export function parseGuestCsv(file) {
         }
         const guests = data.map(row => ({
           name: (row['名稱'] || row['name'] || '').trim(),
-          tableNumber: (row['桌次'] || row['tableNumber'] || '').trim(),
           needsCake: ['是', 'yes', 'true', '1'].includes(
             (row['需要禮餅'] || row['needsCake'] || '').trim().toLowerCase()
           ),
@@ -26,5 +25,21 @@ export function parseGuestCsv(file) {
         reject(new Error(err.message))
       }
     })
+  })
+}
+
+// 解析純名字清單（每行一個名字，可有可無標題列）
+export function parseNameList(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = e => {
+      const names = e.target.result
+        .split(/\r?\n/)
+        .map(l => l.trim())
+        .filter(l => l && l !== '名稱' && l !== 'name')
+      resolve(names)
+    }
+    reader.onerror = () => reject(new Error('讀取檔案失敗'))
+    reader.readAsText(file)
   })
 }

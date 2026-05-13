@@ -7,52 +7,123 @@
       </div>
 
       <div class="modal-body">
-        <!-- CSV 格式說明 -->
-        <div class="hint-box">
-          <div class="hint-title">CSV 格式範例</div>
-          <pre class="hint-code">名稱,桌次,需要禮餅
-王大明,A1,是
-陳小美,B2,否</pre>
-          <div class="hint-note">「需要禮餅」填「是」或「否」</div>
+        <!-- 步驟一：全部賓客 -->
+        <div class="step-block">
+          <div class="step-label">
+            <span class="step-num">1</span>
+            全部賓客名單
+            <span class="step-hint"
+              >每行一個名字的 CSV，預設全部不需要禮餅</span
+            >
+          </div>
+          <div
+            class="drop-zone"
+            :class="{ dragging: dragging1, done: guestNames.length }"
+            @dragover.prevent="dragging1 = true"
+            @dragleave="dragging1 = false"
+            @drop.prevent="(e) => onDrop(e, 'guest')"
+            @click="fileInput1.click()"
+          >
+            <span v-if="!guestNames.length">
+              <div class="drop-icon">📄</div>
+              <div>拖曳或點擊選擇全部賓客 CSV</div>
+            </span>
+            <span v-else class="parsed-info"
+              >✓ {{ guestNames.length }} 位賓客</span
+            >
+          </div>
+          <input
+            ref="fileInput1"
+            type="file"
+            accept=".csv,.txt"
+            style="display: none"
+            @change="(e) => onFile(e, 'guest')"
+          />
         </div>
 
-        <!-- 上傳區 -->
-        <div
-          class="drop-zone"
-          :class="{ dragging }"
-          @dragover.prevent="dragging = true"
-          @dragleave="dragging = false"
-          @drop.prevent="onDrop"
-          @click="fileInput.click()"
-        >
-          <span v-if="!parsedGuests">
-            <div class="drop-icon">📄</div>
-            <div>拖曳 CSV 到此，或點擊選擇檔案</div>
-          </span>
-          <span v-else class="parsed-info">
-            已解析 {{ parsedGuests.length }} 位賓客
-          </span>
+        <!-- 步驟二：禮餅名單 -->
+        <div class="step-block">
+          <div class="step-label">
+            <span class="step-num">2</span>
+            需要禮餅名單
+            <span class="step-hint"
+              >每行一個名字，與步驟一重複的人標記需要禮餅</span
+            >
+          </div>
+          <div
+            class="drop-zone"
+            :class="{
+              dragging: dragging2,
+              done: cakeNames.length,
+              disabled: !guestNames.length,
+            }"
+            @dragover.prevent="if (guestNames.length) dragging2 = true;"
+            @dragleave="dragging2 = false"
+            @drop.prevent="
+              (e) => {
+                if (guestNames.length) onDrop(e, 'cake');
+              }
+            "
+            @click="if (guestNames.length) fileInput2.click();"
+          >
+            <span v-if="!cakeNames.length">
+              <div class="drop-icon">🎂</div>
+              <div>
+                {{
+                  guestNames.length
+                    ? "拖曳或點擊選擇禮餅名單 CSV"
+                    : "請先上傳步驟一"
+                }}
+              </div>
+            </span>
+            <span v-else class="parsed-info"
+              >✓ {{ cakeNames.length }} 位需要禮餅</span
+            >
+          </div>
+          <input
+            ref="fileInput2"
+            type="file"
+            accept=".csv,.txt"
+            style="display: none"
+            @change="(e) => onFile(e, 'cake')"
+          />
         </div>
-        <input ref="fileInput" type="file" accept=".csv" style="display:none" @change="onFile" />
 
         <!-- 錯誤訊息 -->
         <div v-if="parseError" class="parse-error">{{ parseError }}</div>
 
         <!-- 預覽 -->
-        <div v-if="parsedGuests && parsedGuests.length" class="preview">
-          <div class="preview-title">預覽（前 5 筆）</div>
+        <div v-if="mergedGuests.length" class="preview">
+          <div class="preview-title">
+            預覽（前 5 筆）
+            <span class="preview-stats">
+              共 {{ mergedGuests.length }} 位・需要禮餅
+              {{ mergedGuests.filter((g) => g.needsCake).length }} 位
+            </span>
+          </div>
           <table class="preview-table">
-            <thead><tr><th>姓名</th><th>桌次</th><th>需要禮餅</th></tr></thead>
+            <thead>
+              <tr>
+                <th>姓名</th>
+                <th>需要禮餅</th>
+              </tr>
+            </thead>
             <tbody>
-              <tr v-for="(g, i) in parsedGuests.slice(0, 5)" :key="i">
+              <tr v-for="(g, i) in mergedGuests.slice(0, 5)" :key="i">
                 <td>{{ g.name }}</td>
-                <td>{{ g.tableNumber }}</td>
-                <td>{{ g.needsCake ? '是' : '否' }}</td>
+                <td>
+                  <span
+                    class="tag tag-sm"
+                    :class="g.needsCake ? 'tag-yes' : 'tag-no'"
+                  >
+                    {{ g.needsCake ? "是" : "否" }}
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>
-          <div v-if="parsedGuests.length > 5" class="preview-more">
-            … 還有 {{ parsedGuests.length - 5 }} 筆
+          <div v-if="mergedGuests.length > 5" class="preview-more">
+            … 還有 {{ mergedGuests.length - 5 }} 筆
           </div>
         </div>
       </div>
@@ -61,10 +132,10 @@
         <button class="btn-ghost" @click="$emit('close')">取消</button>
         <button
           class="btn-primary"
-          :disabled="!parsedGuests || !parsedGuests.length || importing"
+          :disabled="!mergedGuests.length || importing"
           @click="doImport"
         >
-          {{ importing ? '匯入中…' : '確認匯入' }}
+          {{ importing ? "匯入中…" : "確認匯入" }}
         </button>
       </div>
     </div>
@@ -72,107 +143,220 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useGuestsStore } from '../stores/guests'
-import { parseGuestCsv } from '../utils/csvParser'
+import { ref, computed } from "vue";
+import { useGuestsStore } from "../stores/guests";
+import { parseNameList } from "../utils/csvParser";
 
-const emit = defineEmits(['close'])
-const store = useGuestsStore()
+const emit = defineEmits(["close"]);
+const store = useGuestsStore();
 
-const dragging = ref(false)
-const fileInput = ref(null)
-const parsedGuests = ref(null)
-const parseError = ref('')
-const importing = ref(false)
+const dragging1 = ref(false);
+const dragging2 = ref(false);
+const fileInput1 = ref(null);
+const fileInput2 = ref(null);
+const guestNames = ref([]);
+const cakeNames = ref([]);
+const parseError = ref("");
+const importing = ref(false);
 
-async function processFile(file) {
-  parseError.value = ''
-  parsedGuests.value = null
+const mergedGuests = computed(() => {
+  if (!guestNames.value.length) return [];
+  const cakeSet = new Set(cakeNames.value);
+  const seen = new Set();
+  const result = [];
+  for (const name of guestNames.value) {
+    if (seen.has(name)) continue;
+    seen.add(name);
+    result.push({
+      name,
+      needsCake: cakeSet.has(name),
+      cakeReceived: false,
+      giftMoney: 0,
+      absent: false,
+    });
+  }
+  return result;
+});
+
+async function processFile(file, type) {
+  parseError.value = "";
   try {
-    parsedGuests.value = await parseGuestCsv(file)
+    const names = await parseNameList(file);
+    if (type === "guest") guestNames.value = names;
+    else cakeNames.value = names;
   } catch (e) {
-    parseError.value = e.message
+    parseError.value = e.message;
   }
 }
 
-function onFile(e) {
-  const f = e.target.files[0]
-  if (f) processFile(f)
+function onFile(e, type) {
+  const f = e.target.files[0];
+  if (f) processFile(f, type);
 }
 
-function onDrop(e) {
-  dragging.value = false
-  const f = e.dataTransfer.files[0]
-  if (f) processFile(f)
+function onDrop(e, type) {
+  if (type === "guest") dragging1.value = false;
+  else dragging2.value = false;
+  const f = e.dataTransfer.files[0];
+  if (f) processFile(f, type);
 }
 
 async function doImport() {
-  if (!parsedGuests.value) return
-  importing.value = true
-  await store.importGuests(parsedGuests.value)
-  importing.value = false
-  emit('close')
+  if (!mergedGuests.value.length) return;
+  importing.value = true;
+  await store.importGuests(mergedGuests.value);
+  importing.value = false;
+  emit("close");
 }
 </script>
 
 <style scoped>
 .modal-header {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 1.2rem;
 }
-.modal-header h2 { font-size: 1.15rem; font-weight: 700; }
-.close-btn { padding: 0.3rem 0.6rem; }
-
-.modal-body { display: flex; flex-direction: column; gap: 1rem; }
-
-.hint-box {
-  background: #f8f4ee; border-radius: 8px; padding: 0.9rem;
-  border: 1px solid var(--border);
+.modal-header h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
 }
-.hint-title { font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.4rem; }
-.hint-code {
-  font-family: monospace; font-size: 0.82rem;
-  background: #fff; padding: 0.5rem 0.7rem; border-radius: 6px;
-  border: 1px solid #ddd; line-height: 1.6;
+.close-btn {
+  padding: 0.3rem 0.6rem;
 }
-.hint-note { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.4rem; }
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.step-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.step-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.step-hint {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
 
 .drop-zone {
   border: 2px dashed var(--border);
   border-radius: var(--radius);
-  padding: 2rem;
+  padding: 1.2rem;
   text-align: center;
   cursor: pointer;
   color: var(--text-muted);
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  font-size: 0.88rem;
 }
-.drop-zone:hover, .drop-zone.dragging {
-  border-color: var(--primary); background: #fef3ee;
+.drop-zone:hover,
+.drop-zone.dragging {
+  border-color: var(--primary);
+  background: #fef3ee;
 }
-.drop-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-.parsed-info { font-weight: 600; color: var(--success); font-size: 1rem; }
+.drop-zone.done {
+  border-color: var(--success);
+  background: #f0fdf4;
+  border-style: solid;
+}
+.drop-zone.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.drop-zone.disabled:hover {
+  border-color: var(--border);
+  background: transparent;
+}
+.drop-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+.parsed-info {
+  font-weight: 600;
+  color: var(--success);
+  font-size: 0.95rem;
+}
 
 .parse-error {
-  background: #fdecea; color: var(--error);
-  border-radius: 8px; padding: 0.7rem 1rem;
+  background: #fdecea;
+  color: var(--error);
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
   font-size: 0.85rem;
 }
 
-.preview-title { font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-bottom: 0.5rem; }
+.preview-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.preview-stats {
+  font-weight: 400;
+}
+
 .preview-table {
-  width: 100%; border-collapse: collapse; font-size: 0.85rem;
-  border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
 }
 .preview-table th {
-  background: #fdf3e7; padding: 0.5rem 0.7rem;
-  font-weight: 700; font-size: 0.78rem; text-align: left;
+  background: #fdf3e7;
+  padding: 0.5rem 0.7rem;
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-align: left;
 }
-.preview-table td { padding: 0.45rem 0.7rem; border-top: 1px solid #f0e8d8; }
-.preview-more { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 0.4rem; }
+.preview-table td {
+  padding: 0.45rem 0.7rem;
+  border-top: 1px solid #f0e8d8;
+}
+.preview-more {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 0.4rem;
+}
 
 .modal-footer {
-  display: flex; justify-content: flex-end; gap: 0.6rem;
-  margin-top: 1.4rem; padding-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--border);
 }
 </style>

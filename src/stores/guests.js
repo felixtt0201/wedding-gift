@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { getAllGuests, searchGuests, updateGuest, createGuest, deleteGuest } from '../api/guests'
+import { getAllGuests, searchGuests, updateGuest, createGuest, deleteGuest, deleteAllGuests } from '../api/guests'
 import { addLog } from '../api/logs'
 
 export const useGuestsStore = defineStore('guests', () => {
@@ -93,7 +93,6 @@ export const useGuestsStore = defineStore('guests', () => {
       const created = await createGuest({ ...data, side: currentSide.value })
       allGuests.value.push(created)
       addLog(currentSide.value, '新增賓客', data.name, {
-        tableNumber: data.tableNumber,
         giftMoney: data.giftMoney,
         needsCake: data.needsCake,
       })
@@ -134,6 +133,21 @@ export const useGuestsStore = defineStore('guests', () => {
     showToast('已刪除', 'success')
   }
 
+  async function clearAllGuests() {
+    loading.value = true
+    try {
+      const count = allGuests.value.length
+      await deleteAllGuests(currentSide.value)
+      allGuests.value = []
+      addLog(currentSide.value, '清除全部賓客', null, { count })
+      showToast(`已刪除全部 ${count} 位賓客`, 'success')
+    } catch (e) {
+      showToast(e.message, 'error')
+    } finally {
+      loading.value = false
+    }
+  }
+
   function showToast(message, type = 'success') {
     toast.value = { message, type }
     setTimeout(() => { toast.value = null }, 3000)
@@ -144,6 +158,6 @@ export const useGuestsStore = defineStore('guests', () => {
     allGuests, searchResults, currentGuest, loading, toast,
     totalGiftMoney, cakeStats,
     setSide, loadAll, search, selectGuest, clearSelection,
-    saveGuest, addGuest, importGuests, removeGuest, showToast
+    saveGuest, addGuest, importGuests, removeGuest, clearAllGuests, showToast
   }
 })

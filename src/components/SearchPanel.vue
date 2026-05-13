@@ -29,7 +29,6 @@
       >
         <div class="result-name">{{ g.name }}</div>
         <div class="result-meta">
-          <span>第 {{ g.tableNumber }} 桌</span>
           <span class="tag tag-sm" :class="g.needsCake ? 'tag-yes' : 'tag-no'">
             {{ g.needsCake ? '需要禮餅' : '不需要禮餅' }}
           </span>

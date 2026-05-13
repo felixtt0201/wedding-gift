@@ -3,9 +3,6 @@
     <div class="guest-card__header">
       <div>
         <div class="guest-card__name">{{ guest.name }}</div>
-        <div class="guest-card__table">
-          <span class="table-icon">🪑</span> 第 {{ guest.tableNumber }} 桌
-        </div>
       </div>
       <button class="btn-ghost close-btn" @click="$emit('close')">✕</button>
     </div>

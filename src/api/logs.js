@@ -16,3 +16,11 @@ export async function getLogs(filterSide = null) {
   if (error) throw new Error('載入紀錄失敗')
   return data
 }
+
+export async function clearLogs(filterSide = null) {
+  let query = supabase.from('logs').delete()
+  if (filterSide) query = query.eq('side', filterSide)
+  else query = query.neq('id', 0)
+  const { error } = await query
+  if (error) throw new Error('清除紀錄失敗')
+}
