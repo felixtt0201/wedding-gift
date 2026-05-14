@@ -6,6 +6,7 @@ function fromDb(row) {
     id: row.id,
     name: row.name,
     side: row.side,
+    tableNumber: row.table_number ?? '',
     needsCake: row.needs_cake ?? false,
     cakeReceived: row.cake_received ?? false,
     giftMoney: row.gift_money ?? 0,
@@ -17,6 +18,7 @@ function toDb(data) {
   const result = {}
   if ('name' in data) result.name = data.name
   if ('side' in data) result.side = data.side
+  if ('tableNumber' in data) result.table_number = data.tableNumber
   if ('needsCake' in data) result.needs_cake = data.needsCake
   if ('cakeReceived' in data) result.cake_received = data.cakeReceived
   if ('giftMoney' in data) result.gift_money = data.giftMoney

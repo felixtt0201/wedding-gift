@@ -3,6 +3,9 @@
     <div class="guest-card__header">
       <div>
         <div class="guest-card__name">{{ guest.name }}</div>
+        <div v-if="guest.tableNumber" class="guest-card__table">
+          第 {{ guest.tableNumber }} 桌
+        </div>
       </div>
       <button class="btn-ghost close-btn" @click="$emit('close')">✕</button>
     </div>

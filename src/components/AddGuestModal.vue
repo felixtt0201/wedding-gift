@@ -36,6 +36,18 @@
           </div>
         </div>
 
+        <!-- 桌號 -->
+        <div class="field-group">
+          <label class="field-label">桌號</label>
+          <input
+            type="text"
+            v-model.trim="form.tableNumber"
+            placeholder="例：A1、3"
+            class="text-input"
+            autocomplete="off"
+          />
+        </div>
+
         <!-- 未出席 -->
         <div class="field-group">
           <label class="checkbox-label">
@@ -89,6 +101,7 @@ const saving = ref(false)
 const form = ref({
   name: '',
   giftMoney: 0,
+  tableNumber: '',
   absent: false,
   needsCake: false,
   cakeReceived: false

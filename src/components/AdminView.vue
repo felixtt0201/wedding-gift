@@ -142,6 +142,7 @@ function formatDetails(action, details) {
   if (action === '標記出席') return details.absent ? '標記未出席' : '改為已出席'
   if (action === '新增賓客') {
     const parts = []
+    if (details.tableNumber) parts.push(`第${details.tableNumber}桌`)
     if (details.giftMoney) parts.push(`禮金$${details.giftMoney}`)
     if (details.needsCake) parts.push('需禮餅')
     return parts.join('・') || '—'

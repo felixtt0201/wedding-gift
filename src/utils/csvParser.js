@@ -28,16 +28,20 @@ export function parseGuestCsv(file) {
   })
 }
 
-// 解析純名字清單（每行一個名字，可有可無標題列）
+// 解析賓客清單：每行「名字」或「名字,桌號」，可選標題列
 export function parseNameList(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = e => {
-      const names = e.target.result
+      const rows = e.target.result
         .split(/\r?\n/)
         .map(l => l.trim())
-        .filter(l => l && l !== '名稱' && l !== 'name')
-      resolve(names)
+        .filter(l => l && !/^(名稱|name)/i.test(l))
+      const guests = rows.map(l => {
+        const [name, tableNumber = ''] = l.split(',').map(s => s.trim())
+        return { name, tableNumber }
+      }).filter(g => g.name)
+      resolve(guests)
     }
     reader.onerror = () => reject(new Error('讀取檔案失敗'))
     reader.readAsText(file)

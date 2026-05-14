@@ -13,23 +13,23 @@
             <span class="step-num">1</span>
             全部賓客名單
             <span class="step-hint"
-              >每行一個名字的 CSV，預設全部不需要禮餅</span
+              >格式：名字 或 名字,桌號（每行一筆，預設不需要禮餅）</span
             >
           </div>
           <div
             class="drop-zone"
-            :class="{ dragging: dragging1, done: guestNames.length }"
+            :class="{ dragging: dragging1, done: guestRows.length }"
             @dragover.prevent="dragging1 = true"
             @dragleave="dragging1 = false"
             @drop.prevent="(e) => onDrop(e, 'guest')"
             @click="fileInput1.click()"
           >
-            <span v-if="!guestNames.length">
+            <span v-if="!guestRows.length">
               <div class="drop-icon">📄</div>
               <div>拖曳或點擊選擇全部賓客 CSV</div>
             </span>
             <span v-else class="parsed-info"
-              >✓ {{ guestNames.length }} 位賓客</span
+              >✓ {{ guestRows.length }} 位賓客</span
             >
           </div>
           <input
@@ -55,22 +55,22 @@
             :class="{
               dragging: dragging2,
               done: cakeNames.length,
-              disabled: !guestNames.length,
+              disabled: !guestRows.length,
             }"
-            @dragover.prevent="if (guestNames.length) dragging2 = true;"
+            @dragover.prevent="if (guestRows.length) dragging2 = true;"
             @dragleave="dragging2 = false"
             @drop.prevent="
               (e) => {
-                if (guestNames.length) onDrop(e, 'cake');
+                if (guestRows.length) onDrop(e, 'cake');
               }
             "
-            @click="if (guestNames.length) fileInput2.click();"
+            @click="if (guestRows.length) fileInput2.click();"
           >
             <span v-if="!cakeNames.length">
               <div class="drop-icon">🎂</div>
               <div>
                 {{
-                  guestNames.length
+                  guestRows.length
                     ? "拖曳或點擊選擇禮餅名單 CSV"
                     : "請先上傳步驟一"
                 }}
@@ -105,12 +105,14 @@
             <thead>
               <tr>
                 <th>姓名</th>
+                <th>桌號</th>
                 <th>需要禮餅</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(g, i) in mergedGuests.slice(0, 5)" :key="i">
                 <td>{{ g.name }}</td>
+                <td>{{ g.tableNumber || '—' }}</td>
                 <td>
                   <span
                     class="tag tag-sm"
@@ -154,21 +156,22 @@ const dragging1 = ref(false);
 const dragging2 = ref(false);
 const fileInput1 = ref(null);
 const fileInput2 = ref(null);
-const guestNames = ref([]);
+const guestRows = ref([]); // [{ name, tableNumber }]
 const cakeNames = ref([]);
 const parseError = ref("");
 const importing = ref(false);
 
 const mergedGuests = computed(() => {
-  if (!guestNames.value.length) return [];
+  if (!guestRows.value.length) return [];
   const cakeSet = new Set(cakeNames.value);
   const seen = new Set();
   const result = [];
-  for (const name of guestNames.value) {
+  for (const { name, tableNumber } of guestRows.value) {
     if (seen.has(name)) continue;
     seen.add(name);
     result.push({
       name,
+      tableNumber: tableNumber || '',
       needsCake: cakeSet.has(name),
       cakeReceived: false,
       giftMoney: 0,
@@ -181,9 +184,9 @@ const mergedGuests = computed(() => {
 async function processFile(file, type) {
   parseError.value = "";
   try {
-    const names = await parseNameList(file);
-    if (type === "guest") guestNames.value = names;
-    else cakeNames.value = names;
+    const rows = await parseNameList(file);
+    if (type === "guest") guestRows.value = rows;
+    else cakeNames.value = rows.map(r => r.name);
   } catch (e) {
     parseError.value = e.message;
   }

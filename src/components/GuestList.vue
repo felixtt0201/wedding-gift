@@ -32,6 +32,10 @@
         />
         <button v-if="filterName" class="filter-clear-btn" @click="filterName = ''">✕</button>
       </div>
+      <select v-model="filterTable" class="filter-select">
+        <option value="">全部桌號</option>
+        <option v-for="t in tables" :key="t" :value="t">第 {{ t }} 桌</option>
+      </select>
       <select v-model="filterCake" class="filter-select">
         <option value="">全部禮餅</option>
         <option value="need">需要禮餅</option>
@@ -60,6 +64,7 @@
         <thead>
           <tr>
             <th @click="setSort('name')">姓名 <SortIcon field="name" /></th>
+            <th @click="setSort('tableNumber')">桌號 <SortIcon field="tableNumber" /></th>
             <th @click="setSort('giftMoney')">禮金 <SortIcon field="giftMoney" /></th>
             <th @click="setSort('needsCake')">需要禮餅 <SortIcon field="needsCake" /></th>
             <th @click="setSort('cakeReceived')">禮餅狀態 <SortIcon field="cakeReceived" /></th>
@@ -68,13 +73,14 @@
         </thead>
         <tbody>
           <tr v-if="!filtered.length">
-            <td colspan="5" class="empty-row">沒有符合的賓客</td>
+            <td colspan="6" class="empty-row">沒有符合的賓客</td>
           </tr>
           <tr v-for="g in filtered" :key="g.id" :class="{ 'row-received': g.cakeReceived, 'row-absent': g.absent }">
             <td class="name-cell">
               {{ g.name }}
               <span v-if="g.absent" class="tag tag-sm tag-absent">未出席</span>
             </td>
+            <td class="center">{{ g.tableNumber || '—' }}</td>
             <td class="center money-cell">
               <span v-if="!editing[g.id]" class="money-display" @click="startEdit(g)">
                 {{ formatMoney(g.giftMoney) }}
@@ -130,6 +136,7 @@ const store = useGuestsStore()
 const showAddModal = ref(false)
 
 const filterName = ref('')
+const filterTable = ref('')
 const filterCake = ref('')
 const filterAbsent = ref('')
 const sortField = ref('name')
@@ -137,11 +144,19 @@ const sortAsc = ref(true)
 const editing = ref({})
 const editValues = ref({})
 
+const tables = computed(() => {
+  const set = new Set(store.allGuests.map(g => g.tableNumber).filter(Boolean))
+  return [...set].sort()
+})
+
 const filtered = computed(() => {
   let list = store.allGuests
   if (filterName.value) {
     const q = filterName.value.toLowerCase()
     list = list.filter(g => g.name.toLowerCase().includes(q))
+  }
+  if (filterTable.value) {
+    list = list.filter(g => g.tableNumber === filterTable.value)
   }
   if (filterCake.value === 'need') list = list.filter(g => g.needsCake)
   else if (filterCake.value === 'received') list = list.filter(g => g.needsCake && g.cakeReceived)

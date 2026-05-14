@@ -93,6 +93,7 @@ export const useGuestsStore = defineStore('guests', () => {
       const created = await createGuest({ ...data, side: currentSide.value })
       allGuests.value.push(created)
       addLog(currentSide.value, '新增賓客', data.name, {
+        tableNumber: data.tableNumber,
         giftMoney: data.giftMoney,
         needsCake: data.needsCake,
       })
