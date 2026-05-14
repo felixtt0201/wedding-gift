@@ -325,4 +325,12 @@ tr:hover td { background: #fef9f2; }
 .result-count { font-size: 0.82rem; color: var(--text-muted); }
 .btn-add { font-size: 0.9rem; padding: 0.5rem 1rem; }
 .btn-clear { font-size: 0.9rem; padding: 0.5rem 1rem; }
+
+@media (max-width: 600px) {
+  .stat-value { font-size: 1.1rem; }
+  .filter-select { min-width: 100px; }
+  .toolbar { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+  .toolbar-btns { width: 100%; justify-content: flex-end; }
+  .btn-add, .btn-clear { font-size: 0.82rem; padding: 0.4rem 0.75rem; }
+}
 </style>

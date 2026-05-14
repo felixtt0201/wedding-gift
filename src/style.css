@@ -126,3 +126,8 @@ input:focus, select:focus { border-color: var(--primary); }
   max-height: 90vh;
   overflow-y: auto;
 }
+
+@media (max-width: 600px) {
+  html { font-size: 16px; }
+  .modal { padding: 1.1rem; }
+}

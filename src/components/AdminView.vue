@@ -283,4 +283,10 @@ tr:hover td { background: #fef9f2; }
 .action-更新禮金 { background: #fef9c3; color: #854d0e; }
 .action-切換禮餅 { background: #e0e7ff; color: #3730a3; }
 .action-批次匯入 { background: #dbeafe; color: #1e40af; }
+
+@media (max-width: 600px) {
+  .stat-value { font-size: 1.1rem; }
+  .log-toolbar { flex-direction: column; align-items: flex-start; }
+  .log-actions { margin-left: 0; }
+}
 </style>

@@ -131,4 +131,12 @@ onMounted(() => {
   width: 100%;
   margin: 0 auto;
 }
+
+@media (max-width: 600px) {
+  .app-main { padding: 0.75rem; }
+  .header-inner { padding: 0.6rem 0.75rem; }
+  .app-title { font-size: 0.95rem; }
+  .import-btn, .logout-btn { font-size: 0.78rem; padding: 0.3rem 0.55rem; }
+  .side-badge { font-size: 0.75rem; padding: 0.2rem 0.5rem; }
+}
 </style>
