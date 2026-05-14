@@ -166,8 +166,15 @@ const filtered = computed(() => {
   else if (filterAbsent.value === 'attended') list = list.filter(g => !g.absent)
 
   return [...list].sort((a, b) => {
-    const av = a[sortField.value] ?? ''
-    const bv = b[sortField.value] ?? ''
+    let av, bv
+    if (sortField.value === 'cakeReceived') {
+      // 0=不需要, 1=未領, 2=已領
+      const pri = g => !g.needsCake ? 0 : g.cakeReceived ? 2 : 1
+      av = pri(a); bv = pri(b)
+    } else {
+      av = a[sortField.value] ?? ''
+      bv = b[sortField.value] ?? ''
+    }
     const cmp = av < bv ? -1 : av > bv ? 1 : 0
     return sortAsc.value ? cmp : -cmp
   })
